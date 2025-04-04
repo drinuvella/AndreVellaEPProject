@@ -1,4 +1,5 @@
 ﻿using DataAccess.Repositories;
+using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,8 +7,8 @@ namespace Presentation.Controllers
 {
     public class PollController : Controller
     {
-        private PollRepository _pollRepository;
-        public PollController(PollRepository pollRepository)
+        private IPollRepository _pollRepository;
+        public PollController(IPollRepository pollRepository)
         {
             _pollRepository = pollRepository;
         }
@@ -35,11 +36,11 @@ namespace Presentation.Controllers
             if (selectedOption == null)
             {
                 TempData["error"] = "Please vote";
-                return RedirectToAction("Details",new { id = id});
+                return RedirectToAction("Details", new { id = id });
             }
 
             _pollRepository.Vote(id, selectedOption);
-            
+
             return RedirectToAction("Index");
         }
 

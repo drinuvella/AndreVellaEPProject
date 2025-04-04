@@ -1,5 +1,6 @@
 using DataAccess.DataContext;
 using DataAccess.Repositories;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<PollDbContext>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<PollRepository>();
+Boolean IsReadingJson = builder.Configuration.GetValue<Boolean>("IsReadingJson");
+
+if(IsReadingJson)
+    builder.Services.AddScoped<IPollRepository,PollFileRepository>();
+else
+    builder.Services.AddScoped<IPollRepository,PollRepository>();
 
 var app = builder.Build();
 
