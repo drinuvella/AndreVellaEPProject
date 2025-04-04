@@ -13,7 +13,7 @@ namespace Presentation.Controllers
         }
         public IActionResult Index()
         {
-            var list = _pollRepository.GetPolls();
+            var list = _pollRepository.GetPolls().OrderByDescending(p=> p.DateCreated);
             return View(list);
         }
         public IActionResult Details()
