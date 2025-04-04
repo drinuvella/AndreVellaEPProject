@@ -11,20 +11,44 @@ namespace Presentation.Controllers
         {
             _pollRepository = pollRepository;
         }
+
+        [HttpGet]
         public IActionResult Index()
         {
             var list = _pollRepository.GetPolls().OrderByDescending(p=> p.DateCreated);
             return View(list);
         }
-        public IActionResult Details()
+
+        [HttpGet]
+        public IActionResult Details(Guid id)
         {
-            return View();
+            Poll poll = _pollRepository.GetPolls().FirstOrDefault(p => p.id == id);
+            if(poll == null)
+                return RedirectToAction("Index");
+
+            return View(poll);
         }
+
+        [HttpPost]
+        public IActionResult Vote(Guid id, string selectedOption)
+        {
+            if (selectedOption == null)
+            {
+                TempData["error"] = "Please vote";
+                return RedirectToAction("Details",new { id = id});
+            }
+
+            _pollRepository.Vote(id, selectedOption);
+            
+            return RedirectToAction("Index");
+        }
+
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult Create(Poll poll)
         {

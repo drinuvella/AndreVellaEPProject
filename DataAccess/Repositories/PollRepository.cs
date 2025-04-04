@@ -26,5 +26,21 @@ namespace DataAccess.Repositories
             _PollDbContext.Polls.Add(poll);
             _PollDbContext.SaveChanges();
         }
+
+        public void Vote(Guid id, string selectedOption)
+        {
+            Poll poll = _PollDbContext.Polls.FirstOrDefault(p => p.id == id);
+
+            if (selectedOption.Equals(poll.Option1Text))
+                poll.Option1VotesCount++;
+
+            if (selectedOption.Equals(poll.Option2Text))
+                poll.Option2VotesCount++;
+
+            if (selectedOption.Equals(poll.Option3Text))
+                poll.Option3VotesCount++;
+
+            _PollDbContext.SaveChanges();
+        }
     }
 }
