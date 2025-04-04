@@ -10,9 +10,9 @@
                 <h3>@poll.title</h3>
             </div>
             <ul class="list-unstyled">
-                <li>@poll.Option1VotesCount @poll.Option1Text</li>
-                <li>@poll.Option2VotesCount @poll.Option2Text</li>
-                <li>@poll.Option3VotesCount @poll.Option3Text</li>
+                <li>@poll.Option1Text: @poll.Option1VotesCount</li>
+                <li>@poll.Option2Text: @poll.Option2VotesCount</li>
+                <li>@poll.Option3Text: @poll.Option3VotesCount</li>
             </ul>
             <a href="/Poll/Details/@poll.id" class="btn btn-success">Vote</a>
         </div>
