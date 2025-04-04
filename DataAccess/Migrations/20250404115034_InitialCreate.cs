@@ -13,7 +13,7 @@ namespace DataAccess.Migrations
                 name: "Polls",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    id = table.Column<string>(type: "uniqueidentifier", nullable: false),
                     title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Option1Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Option2Text = table.Column<string>(type: "nvarchar(max)", nullable: false),

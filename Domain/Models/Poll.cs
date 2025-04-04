@@ -10,7 +10,7 @@ namespace Domain.Models
     public class Poll
     {
         [Key]
-        public String id { get; set; }
+        public Guid id { get; set; }
         public String title { get; set; }
         public String Option1Text { get; set; }
         public String Option2Text { get; set; }
