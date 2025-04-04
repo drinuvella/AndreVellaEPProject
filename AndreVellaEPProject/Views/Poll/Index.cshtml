@@ -1,7 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<Domain.Models.Poll>
 
-<h1>List here</h1>
+<h1 class="text-center">Poll List</h1>
+
+<div class="poll-list">
+    @foreach (var poll in Model)
+    {
+        <div class="poll-item mb-3 p-3 border rounded">
+            <div class="text-center">
+                <h3>@poll.title</h3>
+            </div>
+            <ul class="list-unstyled">
+                <li>@poll.Option1VotesCount @poll.Option1Text</li>
+                <li>@poll.Option2VotesCount @poll.Option2Text</li>
+                <li>@poll.Option3VotesCount @poll.Option3Text</li>
+            </ul>
+        </div>
+    }
+</div>
