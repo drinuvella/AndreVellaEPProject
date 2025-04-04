@@ -1,6 +1,26 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<h1>Create poll here</h1>
+﻿@model Domain.Models.Poll
+
+<form action="/Poll/Create" method="post">
+    <h3>Create Poll</h3>
+    <div class="mb-3">
+        <label for="Title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" value="@Model?.title">
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.title)</span>
+    </div>
+    <div class="mb-3">
+        <label for="Option1Text" class="form-label">Option 1</label>
+        <input type="text" class="form-control" id="Option1Text" name="Option1Text" value="@Model?.Option1Text">
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Option1Text)</span>
+    </div>
+    <div class="mb-3">
+        <label for="Option2Text" class="form-label">Option 2</label>
+        <input type="text" class="form-control" id="Option2Text" name="Option2Text" value="@Model?.Option2Text">
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Option2Text)</span>
+    </div>
+    <div class="mb-3">
+        <label for="Option3Text" class="form-label">Option 3</label>
+        <input type="text" class="form-control" id="Option3Text" name="Option3Text" value="@Model?.Option3Text">
+        <span class="text-danger">@Html.ValidationMessageFor(m => m.Option3Text)</span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>

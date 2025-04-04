@@ -1,4 +1,5 @@
 ﻿using DataAccess.Repositories;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -19,9 +20,21 @@ namespace Presentation.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Poll poll)
+        {
+            if (!ModelState.IsValid)
+                return View(poll);
+
+            poll.id = Guid.NewGuid();
+            poll.DateCreated = DateTime.Now;
+            _pollRepository.CreatePoll(poll);
+            return RedirectToAction("Index");
         }
     }
 }
