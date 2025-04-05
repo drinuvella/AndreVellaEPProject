@@ -2,15 +2,20 @@
 using Domain.Interfaces;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 
 namespace Presentation.Controllers
 {
     public class PollController : Controller
     {
         private IPollRepository _pollRepository;
-        public PollController(IPollRepository pollRepository)
+        private IHttpContextAccessor _httpContextAccessorRepository;
+        private VoteRecordRepository _voteRecordRepository;
+        public PollController(IPollRepository pollRepository, IHttpContextAccessor httpContextAccessor, VoteRecordRepository voteRecordRepository)
         {
             _pollRepository = pollRepository;
+            _httpContextAccessorRepository = httpContextAccessor;
+            _voteRecordRepository = voteRecordRepository;
         }
 
         [HttpGet]
@@ -31,6 +36,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
+        [VoteRecordActionFilter]
         public IActionResult Vote(Guid id, string selectedOption)
         {
             if (selectedOption == null)
@@ -39,7 +45,25 @@ namespace Presentation.Controllers
                 return RedirectToAction("Details", new { id = id });
             }
 
-            _pollRepository.Vote(id, selectedOption);
+            Boolean hasVoted = false;
+            var user = _httpContextAccessorRepository.HttpContext.User;
+            if (user != null && user.Identity.IsAuthenticated)
+                hasVoted = _voteRecordRepository.GetVoteRecords().FirstOrDefault(
+                    vr => vr.PollId == id && 
+                    vr.Email.Equals(user.Identity.Name)) != null;
+            
+            else
+            {
+                String ipAddress = _httpContextAccessorRepository.HttpContext.Connection.RemoteIpAddress?.ToString();
+                hasVoted = _voteRecordRepository.GetVoteRecords().FirstOrDefault(
+                    vr => vr.PollId == id && 
+                    vr.Email.Length < 1 && 
+                    vr.IpAddress.Equals(ipAddress)) != null;
+            }
+
+            if (!hasVoted) { 
+                _pollRepository.Vote(id, selectedOption);
+            }
 
             return RedirectToAction("Index");
         }
