@@ -1,15 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Castle.Core.Configuration;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
-using DataAccess.DataContext;
+﻿using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 using Domain.Interfaces;
 using Domain.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
@@ -24,10 +16,10 @@ namespace DataAccess.Repositories
 
         public IQueryable<Poll> GetPolls()
         {
-            if(!System.IO.File.Exists(_filename))
+            if(!File.Exists(_filename))
                 return new List<Poll>().AsQueryable();
 
-            string contents = System.IO.File.ReadAllText(_filename);
+            string contents = File.ReadAllText(_filename);
             
             var polls = JsonConvert.DeserializeObject<List<Poll>>(contents);
 
@@ -42,7 +34,7 @@ namespace DataAccess.Repositories
 
             string contents = JsonConvert.SerializeObject(polls);
 
-            System.IO.File.WriteAllText(_filename, contents);
+            File.WriteAllText(_filename, contents);
         }
 
         public void Vote(Guid id, string selectedOption)
@@ -65,7 +57,7 @@ namespace DataAccess.Repositories
 
             string contents = JsonConvert.SerializeObject(polls);
 
-            System.IO.File.WriteAllText(_filename, contents);
+            File.WriteAllText(_filename, contents);
         }
     }
 }
