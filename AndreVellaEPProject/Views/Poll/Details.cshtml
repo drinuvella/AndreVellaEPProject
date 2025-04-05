@@ -36,23 +36,31 @@
     <button type="submit" class="btn btn-primary mt-3">Submit Vote</button>
 </form>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@if ((Model.Option1VotesCount + Model.Option2VotesCount + Model.Option3VotesCount) > 0)
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
 
-<script>
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ["@Model.Option1Text", "@Model.Option2Text", "@Model.Option3Text"],
-            datasets: [{
-                label: "",
-                data: [@Model.Option1VotesCount, @Model.Option2VotesCount, @Model.Option3VotesCount],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: false
-        }
-    });
-</script>
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["@Model.Option1Text", "@Model.Option2Text", "@Model.Option3Text"],
+                datasets: [{
+                    label: "",
+                    data: [@Model.Option1VotesCount, @Model.Option2VotesCount, @Model.Option3VotesCount],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        });
+    </script>
+}
+else{
+    <script>
+        const ctx = document.getElementById('myChart');
+        ctx.remove();
+    </script>
+}
